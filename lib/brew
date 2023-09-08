@@ -18,7 +18,6 @@ run_brew() {
         local list_formulae
         local -a missing_formulae
         local -a desired_formulae=(
-            'coreutils' # GNU core utilities (those that come with OS X are outdated)
             'git'
             'gh'
             'bash'
@@ -54,7 +53,7 @@ run_brew() {
     else
         printf "\n"
         e_error "Error: Homebrew not found."
-        printf "Aborting...\n"
+        printf "Aborting with error...\n"
         exit
     fi
 
