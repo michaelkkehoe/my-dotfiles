@@ -1,0 +1,5 @@
+# Flush Directory Service cache
+alias dnsflush="systemd-resolve --flush-caches"
+
+# Lock the screen (when going AFK)
+alias afk="i3lock -c 000000"

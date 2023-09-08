@@ -1,0 +1,5 @@
+apt install tree -y
+apt install ngrep -y
+apt install git -y
+apt install pstree -y
+apt install gh -y

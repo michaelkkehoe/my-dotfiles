@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+# Make vim the default editor.
+export EDITOR='vim';
+
+# Better ZSH History
+export HISTSIZE=50000000;
+export HISTFILESIZE=$HISTSIZE;
+export SAVEHIST=$HISTSIZE
+export HISTCONTROL=ignoredups;
+export HISTFILE=~/.zsh_history
+export HISTTIMEFORMAT="[%F %T] "
+
+# Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
+export PYTHONIOENCODING='UTF-8';
+
+# Prefer US English and use UTF-8
+export LANG="en_US.UTF-8";
+export LC_ALL="en_US.UTF-8";
+
+# Hide the “default interactive shell is now zsh” warning on macOS.
+export BASH_SILENCE_DEPRECATION_WARNING=1;
+
+# Don't clear the screen after quitting a manual page
+export MANPAGER="less -X"
+
+# Make new shells get the history lines from all previous
+# shells instead of the default "last window closed" history
+export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+
+# (macOS-only) Prevent Homebrew from reporting - https://github.com/Homebrew/brew/blob/master/share/doc/homebrew/Analytics.md
+export HOMEBREW_NO_ANALYTICS=1
