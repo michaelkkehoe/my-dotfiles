@@ -142,24 +142,25 @@ mirrorfiles() {
     e_success "Dotfiles update complete!"
 }
 
+mirrorfiles
 # Ask before potentially overwriting files
-seek_confirmation "Warning: This step may overwrite your existing dotfiles."
-if is_confirmed; then
-    mirrorfiles
-    source ${HOME}/.bash_profile
-else
-    printf "Aborting...\n"
-    exit 1
-fi
+# seek_confirmation "Warning: This step may overwrite your existing dotfiles."
+# if is_confirmed; then
+#     mirrorfiles
+#     source ${HOME}/.bash_profile
+# else
+#     printf "Aborting...\n"
+#     exit 1
+# fi
 
 if [ "$(uname)" == "Darwin" ]; then
     # Ask before potentially overwriting OS X defaults
-    seek_confirmation "Warning: This step may modify your OS X system defaults."
+    # seek_confirmation "Warning: This step may modify your OS X system defaults."
 
-    if is_confirmed; then
-        bash ./bin/osxdefaults
-        e_success "OS X settings updated! You may need to restart."
-    else
-        printf "Skipped OS X settings update.\n"
-    fi
+    # if is_confirmed; then
+    bash ./bin/osxdefaults
+    e_success "OS X settings updated! You may need to restart."
+    # else
+    #     printf "Skipped OS X settings update.\n"
+    # fi
 fi
