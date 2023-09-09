@@ -1,6 +1,5 @@
 # Tell OSX to sleep
 alias deepsleep="pmset displaysleepnow"
-alias afk="/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resources/CGSession -suspend"
 
 # Flush Directory Service cache
 alias dnsflush="dscacheutil -flushcache && killall -HUP mDNSResponder"

@@ -52,7 +52,7 @@ defaults write com.apple.dock mru-spaces -bool false
 # defaults write com.apple.dock orientation left
 
 # Dock: set the icon size of Dock items to 36 pixels
-defaults write com.apple.dock tilesize -int 36
+defaults write com.apple.dock tilesize -int 60
 
 # Dock: show indicator lights for open applications
 defaults write com.apple.dock show-process-indicators -bool true

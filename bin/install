@@ -73,7 +73,7 @@ if ! is_git_repo; then
     e_header "Initializing git repository..."
     git init
     git remote add origin ${DOTFILES_GIT_REMOTE}
-    git fetch origin master
+    git fetch origin main
     # Reset the index and working tree to the fetched HEAD
     # (submodules are cloned in the subsequent sync step)
     git reset --hard FETCH_HEAD
@@ -126,13 +126,16 @@ mirrorfiles() {
     link "shell/bash_profile" ".bash_profile"
     link "shell/curlrc"       ".curlrc"
     link "shell/inputrc"      ".inputrc"
+    link "shell/zshrc"        ".zshrc"
+    link "shell/zsh_profile"  ".zsh_profile"
+    link "shell/exports"      ".exports"
+    link "shell/paths"        ".paths"
     link "git/gitattributes"  ".gitattributes"
     link "git/gitignore"      ".gitignore"
     link "vim"                ".vim"
     link "vim/gvimrc"         ".gvimrc"
     link "vim/vimrc"          ".vimrc"
-    link "shell/zshrc"        ".zshrc"
-    link "shell/zsh_profile"  ".zsh_profile"
+
     if [ "$(uname)" == "Darwin" ]; then
         cat "shell/common_aliases" "shell/osx_aliases" >> "shell/aliases"
     elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
@@ -142,18 +145,25 @@ mirrorfiles() {
     e_success "Dotfiles update complete!"
 }
 
-mirrorfiles
+# mirrorfiles
 # Ask before potentially overwriting files
-# seek_confirmation "Warning: This step may overwrite your existing dotfiles."
-# if is_confirmed; then
-#     mirrorfiles
-#     source ${HOME}/.bash_profile
-# else
-#     printf "Aborting...\n"
-#     exit 1
-# fi
+seek_confirmation "Warning: This step may overwrite your existing dotfiles."
+if is_confirmed; then
+    mirrorfiles
+    source ${HOME}/.bash_profile
+else
+    printf "Aborting...\n"
+    exit 1
+fi
+
+e_header "Need to sign in to Github"
+gh auth login
+
+e_header "Need to sync SSH configuration file from GitHub"
+git clone https://github.com/michaelkkehoe/ssh-dotfiles.git ~/.ssh/
 
 if [ "$(uname)" == "Darwin" ]; then
+    e_header "About to apply OSX defaults. You may be prompted for your password"
     # Ask before potentially overwriting OS X defaults
     # seek_confirmation "Warning: This step may modify your OS X system defaults."
 
