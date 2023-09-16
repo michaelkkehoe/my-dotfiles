@@ -1,17 +1,40 @@
-# Directories to be appended to PATH
-declare -a dirs_to_append=(
-    /usr/bin
-    $HOME/bin
-    $HOME/.dotfiles/bin
-    $HOME/.rvm/bin
-    $(brew --prefix)/share/npm/bin # Add npm-installed package bin
+# bash_paths
+
+# Directories to be prepended to PATH
+dirs_to_prepend=(
+    "/usr/local/bin" # Ensure that this bin always takes precedence over `/usr/bin`
 )
+
+# Directories to be appended to PATH
+append_dirs=(
+    "/usr/bin"
+    "$HOME/bin"
+    "$HOME/.dotfiles/bin"
+    "$HOME/.rvm/bin"
+)
+
+# Add brew-installed GNU core utilities bin
+append_dirs+=("$(brew --prefix coreutils)/libexec/gnubin")
+
+# Add npm-installed package bin
+append_dirs+=("$(brew --prefix)/share/npm/bin")
+
 # Prepend directories to PATH
-for index in "${dirs_to_append[@]}"; do
-    if [ -d "$index" ]; then
-        # If these directories exist, then prepend them to existing PATH
-        PATH="$index:$PATH"
+for dir in "${dirs_to_prepend[@]}"
+do
+    if [ -d "$dir" ]; then
+        PATH="$dir:$PATH"
     fi
 done
+
+# Append directories to PATH
+for dir in "${append_dirs[@]}"
+do
+    if [ -d "$dir" ]; then
+        PATH="$PATH:$dir"
+    fi
+done
+
+unset dirs_to_prepend append_dirs
 
 export PATH
