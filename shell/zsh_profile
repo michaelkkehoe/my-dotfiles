@@ -18,6 +18,7 @@ load_dotfiles() {
     declare -a files=(
         $HOME/.dotfiles/shell/zsh_options # Options
         $HOME/.dotfiles/shell/exports # Exports
+        $HOME/.dotfiles/shell/functions # Functions
         $HOME/.dotfiles/shell/aliases # Aliases
         $HOME/.dotfiles/shell/zsh_prompt # Custom zsh prompt
         $HOME/.dotfiles/shell/paths # Path modifications
