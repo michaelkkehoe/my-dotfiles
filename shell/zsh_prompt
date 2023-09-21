@@ -1,11 +1,9 @@
-# Prompt with Git branch
+# Load version control information
+autoload -Uz vcs_info
+precmd() { vcs_info }
 
-prompt_git() {
-    local branch_name
-    branch_name=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-    if [ -n "$branch_name" ]; then
-        echo "%F{blue}($branch_name)%f"
-    fi
-}
-
-PROMPT='[%F{green}%n%f@%F{cyan}%m%f:%F{yellow}%~%f] $(prompt_git) %# '
+# Format the vcs_info_msg_0_ variable
+zstyle ':vcs_info:git:*' formats 'on %b'
+# Set up the prompt (with git branch name)
+setopt PROMPT_SUBST
+PROMPT='%n@%m in ${PWD/#$HOME/~} ${vcs_info_msg_0_} %# '
