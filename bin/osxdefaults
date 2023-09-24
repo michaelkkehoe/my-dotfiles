@@ -104,6 +104,12 @@ defaults write com.apple.finder ShowHardDrivesOnDesktop -bool true
 defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
 defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
 
+# Show the Path bar
+defaults write com.apple.finder ShowPathbar -bool true
+
+# Changing file extension warning to false
+defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+
 
 # Panels
 # ----------------------------------------------------------------------
@@ -170,6 +176,9 @@ defaults write com.apple.spotlight DictionaryLookupEnabled -bool false
 
 # Misc: disable auto-correct
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+
+# Change menu bar datetime (doesn't current'y work)
+defaults write com.apple.menuextra.clock DateFormat -string EEE d MMM HH:mm:ss
 
 for app in "Dashboard" "Dock" "Finder" "SystemUIServer" "Terminal" "iTunes"; do
     killall "$app" > /dev/null 2>&1
