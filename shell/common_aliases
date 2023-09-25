@@ -6,8 +6,8 @@ alias bne2="ssh build@bne.external.michael-kehoe.io -p 20498"
 alias bb="ssh build@bne-bssh-01.bne.internal.michael-kehoe.io"
 alias sb="ssh build@sfo-bssh-01.sfo.internal.michael-kehoe.io"
 alias dsm="ssh vvaiicvu@dsm-rpz-01.centralus.cloudapp.azure.com -L 8080:localhost:8080"
-alias haprod="ssh root@192.168.1.237"
-alias habeta="ssh root@192.168.1.211"
+alias haprod="ssh root@192.168.1.211"
+alias habeta="ssh root@192.168.1.237"
 
 # IP Addresses
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
