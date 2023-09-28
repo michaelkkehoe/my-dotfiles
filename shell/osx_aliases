@@ -2,7 +2,7 @@
 alias deepsleep="pmset displaysleepnow"
 
 # Flush Directory Service cache
-alias dnsflush="dscacheutil -flushcache && killall -HUP mDNSResponder"
+alias dnsflush="dscacheutil -flushcache"
 
 # Empty the Trash on all mounted volumes and the main HDD
 # Also, clear Apple’s System Logs to improve shell startup speed
