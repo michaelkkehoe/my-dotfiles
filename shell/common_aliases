@@ -90,6 +90,9 @@ alias sl="screen -list"
 alias sn="screen -U -S"
 alias sr="screen -a -A -U -D -R"
 
+# yt download
+yt-dlp-audio='./yt-dlp -x --audio-format mp3 --embed-thumbnail -o "%(title)s.%(ext)s"'
+
 # History aliases
 alias h="history"
 alias history-stat="history . | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
