@@ -1,9 +1,99 @@
-# Load version control information
-autoload -Uz vcs_info
-precmd() { vcs_info }
-
-# Format the vcs_info_msg_0_ variable
-zstyle ':vcs_info:git:*' formats 'on %b'
-# Set up the prompt (with git branch name)
+# Enable parameter expansion, command substitution, and arithmetic expansion in prompts
 setopt PROMPT_SUBST
-PROMPT='%n@%m in ${PWD/#$HOME/~} ${vcs_info_msg_0_} %# '
+
+prompt_git() {
+    local s=""
+    local branchName=""
+
+    # Check if the current directory is in a git repository
+    if git rev-parse --is-inside-work-tree &>/dev/null; then
+
+        # Check if the current directory is in .git before running git checks
+        if [[ "$(git rev-parse --is-inside-git-dir 2> /dev/null)" == "false" ]]; then
+
+            # Ensure index is up to date
+            git update-index --really-refresh -q &>/dev/null
+
+            # Check for uncommitted changes in the index
+            if ! git diff --quiet --ignore-submodules --cached; then
+                s="$s+";
+            fi
+
+            # Check for unstaged changes
+            if ! git diff-files --quiet --ignore-submodules --; then
+                s="$s!";
+            fi
+
+            # Check for untracked files
+            if [[ -n "$(git ls-files --others --exclude-standard)" ]]; then
+                s="$s?";
+            fi
+
+            # Check for stashed files
+            if git rev-parse --verify refs/stash &>/dev/null; then
+                s="$s$";
+            fi
+        fi
+
+        # Get the short symbolic ref or SHA
+        branchName="$(git symbolic-ref --quiet --short HEAD 2> /dev/null || \
+                      git rev-parse --short HEAD 2> /dev/null || \
+                      printf "(unknown)")"
+
+        [[ -n "$s" ]] && s=" [$s]"
+
+        # $1 is the prefix passed from the PS1 definition
+        printf "%s" "${1}${branchName}${s}"
+    fi
+}
+
+set_prompts() {
+    # Define colors using Zsh's internal %F (foreground) syntax is cleaner, 
+    # but we will stick to your tput approach wrapped for Zsh.
+    local bold reset black blue cyan green orange purple red white yellow
+    
+    if [[ -x /usr/bin/tput ]] && tput setaf 1 >&/dev/null; then
+        bold="%{$(tput bold)%}"
+        reset="%{$(tput sgr0)%}"
+        black="%{$(tput setaf 0)%}"
+        blue="%{$(tput setaf 33)%}"
+        cyan="%{$(tput setaf 37)%}"
+        green="%{$(tput setaf 64)%}"
+        orange="%{$(tput setaf 166)%}"
+        purple="%{$(tput setaf 125)%}"
+        red="%{$(tput setaf 124)%}"
+        white="%{$(tput setaf 15)%}"
+        yellow="%{$(tput setaf 136)%}"
+    else
+        bold=""
+        reset="%{\e[0m%}"
+        black="%{\e[1;30m%}"
+        blue="%{\e[1;34m%}"
+        # ... (rest of the fallbacks)
+    fi
+
+    local userStyle
+    if [[ "$USER" == "root" ]]; then
+        userStyle="${bold}${red}"
+    else
+        userStyle="${orange}"
+    fi
+
+    local hostStyle="${yellow}"
+
+    # Build the PROMPT (Zsh equivalent of PS1)
+    # %n = username
+    # %m = short hostname
+    # %~ = current directory (with ~ for home)
+    # %# = # for root, % for regular user (standard Zsh behavior)
+    
+    PROMPT="${reset}${bold}
+${userStyle}%n${white}@${hostStyle}%m${white} in ${green}%~ \$(prompt_git \"${white} on ${purple}\")
+${white}%# ${reset}"
+
+    # Zsh equivalent of PS2 (continuation prompt)
+    PROMPT2="${yellow}→ ${reset}"
+}
+
+set_prompts
+unset -f set_prompts

@@ -8,6 +8,7 @@ alias sb="ssh build@sfo-bssh-01.sfo.internal.michael-kehoe.io"
 alias dsm="ssh vvaiicvu@dsm-rpz-01.centralus.cloudapp.azure.com -L 8080:localhost:8080"
 alias haprod="ssh root@192.168.1.211"
 alias habeta="ssh root@192.168.1.237"
+alias fixbne="ssh root@192.168.0.21 vmkfstools -x repair /vmfs/volumes/6208c8b8-b5a87aa6-bc7b-6805cae9ef0f/ISOs/haos_ova-9.4.vmdk"
 
 # IP Addresses
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"

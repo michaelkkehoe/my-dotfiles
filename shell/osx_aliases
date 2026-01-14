@@ -1,6 +1,6 @@
 # Tell OSX to sleep
 alias deepsleep="pmset displaysleepnow"
-
+alias afk="osascript -e 'tell application \"System Events\" to keystroke \"q\" using {control down, command down}'"
 # Flush Directory Service cache
 alias dnsflush="dscacheutil -flushcache"
 

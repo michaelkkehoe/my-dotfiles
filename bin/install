@@ -137,12 +137,47 @@ mirrorfiles() {
     link "vim/vimrc"          ".vimrc"
 
     if [ "$(uname)" == "Darwin" ]; then
-        cat "shell/common_aliases" "shell/osx_aliases" >> "shell/aliases"
+        cat "shell/common_aliases" "shell/osx_aliases" > "shell/aliases"
     elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-        cat "shell/common_aliases" "shell/linux_aliases" >> "shell/aliases"
+        cat "shell/common_aliases" "shell/linux_aliases" > "shell/aliases"
     fi
     link "shell/aliases"    ".aliases"
     e_success "Dotfiles update complete!"
+}
+
+# Detect whether the host has an interface IP inside 192.168.0.0/22
+has_internal_ssh_network() {
+    # Prefer ifconfig (available on macOS) and fall back to ip(8)
+    local ips
+    ips=$(ifconfig 2>/dev/null | awk '/inet / {print $2}' | grep -v '^127\.') || true
+
+    if [[ -z "${ips}" ]] && type_exists 'ip'; then
+        ips=$(ip -4 addr show 2>/dev/null | awk '/inet / {print $2}' | cut -d/ -f1 | grep -v '^127\.') || true
+    fi
+
+    for ip in ${ips}; do
+        if [[ "${ip}" =~ ^192\.168\.[0-3]\.[0-9]+$ ]]; then
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+install_gh_if_missing() {
+    if type_exists 'gh'; then
+        return
+    fi
+
+    if type_exists 'brew'; then
+        e_header "Installing GitHub CLI..."
+        brew install gh || e_warning "Unable to install gh via Homebrew."
+    elif type_exists 'apt-get'; then
+        e_header "Installing GitHub CLI..."
+        sudo apt-get install -y gh || e_warning "Unable to install gh via apt-get."
+    else
+        e_warning "No supported package manager found to install gh."
+    fi
 }
 
 # mirrorfiles
@@ -156,11 +191,26 @@ else
     exit 1
 fi
 
-e_header "Need to sign in to Github"
-gh auth login
+install_gh_if_missing
 
-e_header "Need to sync SSH configuration file from GitHub"
-git clone https://github.com/michaelkkehoe/ssh-dotfiles.git ~/.ssh/
+if type_exists 'gh'; then
+    e_header "Need to sign in to Github"
+    gh auth login
+else
+    e_warning "Skipping GitHub CLI login (gh not installed)."
+fi
+
+if has_internal_ssh_network; then
+    if [ -d "${HOME}/.ssh/.git" ]; then
+        e_header "Updating SSH configuration file from GitHub"
+        git -C "${HOME}/.ssh" pull --rebase
+    else
+        e_header "Need to sync SSH configuration file from GitHub"
+        git clone https://github.com/michaelkkehoe/ssh-dotfiles.git "${HOME}/.ssh/"
+    fi
+else
+    e_warning "Skipping SSH config sync (no 192.168.0.0/22 interface detected)."
+fi
 
 if [ "$(uname)" == "Darwin" ]; then
     e_header "About to apply OSX defaults. You may be prompted for your password"

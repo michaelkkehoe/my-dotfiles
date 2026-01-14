@@ -4,3 +4,9 @@ apt install git -y
 apt install pstree -y
 apt install gh -y
 apt install jq -y
+apt install wget -y
+apt install python3 -y
+apt install traceroute -y
+apt install unzip -y
+apt install curl -y
+apt install sqlite -y
