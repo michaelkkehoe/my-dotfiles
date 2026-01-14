@@ -180,6 +180,14 @@ install_gh_if_missing() {
     fi
 }
 
+is_gh_authenticated() {
+    if ! type_exists 'gh'; then
+        return 1
+    fi
+
+    gh auth status --hostname github.com >/dev/null 2>&1
+}
+
 # mirrorfiles
 # Ask before potentially overwriting files
 seek_confirmation "Warning: This step may overwrite your existing dotfiles."
@@ -194,8 +202,12 @@ fi
 install_gh_if_missing
 
 if type_exists 'gh'; then
-    e_header "Need to sign in to Github"
-    gh auth login
+    if is_gh_authenticated; then
+        e_header "GitHub CLI already authenticated; skipping login."
+    else
+        e_header "Need to sign in to Github"
+        gh auth login
+    fi
 else
     e_warning "Skipping GitHub CLI login (gh not installed)."
 fi

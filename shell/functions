@@ -89,3 +89,22 @@ function getcertnames() {
 		return 1;
 	fi;
 }
+
+# Update the dotfiles repository in-place
+function dotfiles_sync() {
+	local repo="${HOME}/.dotfiles"
+
+	if [ ! -d "${repo}/.git" ]; then
+		echo "dotfiles repo not found at ${repo}";
+		return 1;
+	fi;
+
+	pushd "${repo}" >/dev/null || return 1;
+	git pull --rebase --stat origin main && \
+		git submodule update --recursive --init --quiet;
+	local status=$?;
+	popd >/dev/null || true;
+	return ${status};
+}
+
+alias dfs="dotfiles_sync"

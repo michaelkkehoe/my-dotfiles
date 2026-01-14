@@ -92,7 +92,7 @@ alias sn="screen -U -S"
 alias sr="screen -a -A -U -D -R"
 
 # yt download
-yt-dlp-audio='yt-dlp -x --audio-format mp3 --embed-thumbnail -o "%(title)s.%(ext)s"'
+alias yt-dlp-audio='yt-dlp -x --audio-format mp3 --embed-thumbnail -o "%(title)s.%(ext)s"'
 
 # History aliases
 alias h="history"
