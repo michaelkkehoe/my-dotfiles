@@ -216,6 +216,12 @@ if has_internal_ssh_network; then
     if [ -d "${HOME}/.ssh/.git" ]; then
         e_header "Updating SSH configuration file from GitHub"
         git -C "${HOME}/.ssh" pull --rebase
+    elif [ -d "${HOME}/.ssh" ]; then
+        backup="${HOME}/.ssh.backup-$(date +%s)"
+        e_warning "~/.ssh exists but is not a git repo; moving to ${backup}"
+        mv "${HOME}/.ssh" "${backup}"
+        e_header "Need to sync SSH configuration file from GitHub"
+        git clone https://github.com/michaelkkehoe/ssh-dotfiles.git "${HOME}/.ssh/"
     else
         e_header "Need to sync SSH configuration file from GitHub"
         git clone https://github.com/michaelkkehoe/ssh-dotfiles.git "${HOME}/.ssh/"
