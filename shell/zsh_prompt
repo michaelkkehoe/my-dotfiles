@@ -81,19 +81,14 @@ set_prompts() {
 
     local hostStyle="${yellow}"
 
-    # Show virtualenv name when active
-    local venv=""
-    if [[ -n "${VIRTUAL_ENV}" ]]; then
-        venv="%{$reset%}${bold}${purple}($(basename "${VIRTUAL_ENV}")) "
-    fi
-
     # Build the PROMPT (Zsh equivalent of PS1)
     # %n = username
     # %m = short hostname
     # %~ = current directory (with ~ for home)
     # %# = # for root, % for regular user (standard Zsh behavior)
     
-    PROMPT="${reset}${bold}${venv}${userStyle}%n${white}@${hostStyle}%m${white} in ${green}%~ \$(prompt_git \"${white} on ${purple}\")
+    PROMPT="${reset}${bold}
+${userStyle}%n${white}@${hostStyle}%m${white} in ${green}%~ \$(prompt_git \"${white} on ${purple}\")
 ${white}%# ${reset}"
 
     # Zsh equivalent of PS2 (continuation prompt)

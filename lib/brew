@@ -32,6 +32,7 @@ run_brew() {
             'gcc'
             'yt-dlp'
             'unzip'
+            'lance0/tap/ttl'
         )
 
         for index in ${!desired_formulae[*]}
