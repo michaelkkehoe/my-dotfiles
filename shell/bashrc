@@ -12,7 +12,7 @@ CURRENT_SHELL_NAME="${SHELL##*/}"
 SHELL_COUNT=$(ps -A -o comm= | grep -cx "$CURRENT_SHELL_NAME")
 
 # 3. Only run if SHELL_COUNT is 1 (meaning this is the first/only window)
-if [ "$SHELL_COUNT" -eq 0 ]; then
+if [ "$SHELL_COUNT" -eq 1 ]; then
     if [[ "$(uname)" == "Darwin" ]]; then
         # macOS: Use --apple-time
         ping  --apple-time 1.1.1.1
