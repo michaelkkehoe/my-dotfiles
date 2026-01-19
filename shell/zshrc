@@ -14,9 +14,9 @@ if [[ $- == *i* ]]; then
 
     if [ "$SHELL_COUNT" -eq 2 ]; then
         if [[ "$(uname)" == "Darwin" ]]; then
-            ping -c 1 --apple-time 1.1.1.1
+            ping  --apple-time 1.1.1.1
         elif [[ "$(uname)" == "Linux" ]]; then
-            ping -c 1 1.1.1.1
+            ping 1 1.1.1.1
         fi
     fi
 fi
