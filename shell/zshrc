@@ -4,21 +4,20 @@
 
 [ -n "$PS1" ] && source ~/.zsh_profile
 
-# 1. Identify the current shell (e.g., 'zsh' or 'bash')
-CURRENT_SHELL_NAME="${SHELL##*/}"
+# --- Network Check Start ---
+if [[ $- == *i* ]]; then
+    # Get the exact process name (e.g., "-zsh" or "bash")
+    MY_PROC_NAME=$(ps -p $$ -o comm=)
 
-# 2. Count how many instances of this shell are running.
-#    Works on both macOS and Linux using standard 'ps'.
-SHELL_COUNT=$(ps -A -o comm= | grep -c "$CURRENT_SHELL_NAME")
+    # We use '-e' to safely handle names starting with a dash (like -zsh)
+    SHELL_COUNT=$(ps -A -o comm= | grep -cFx -e "$MY_PROC_NAME")
 
-# 3. Only run if SHELL_COUNT is 1 (meaning this is the first/only window)
-if [ "$SHELL_COUNT" -eq 1 ]; then
-    if [[ "$(uname)" == "Darwin" ]]; then
-        # macOS: Use --apple-time
-        ping  --apple-time 1.1.1.1
-    elif [[ "$(uname)" == "Linux" ]]; then
-        # Linux: Standard ping (must use -c 1 to prevent hanging)
-        ping 1.1.1.1
+    if [ "$SHELL_COUNT" -eq 2 ]; then
+        if [[ "$(uname)" == "Darwin" ]]; then
+            ping -c 1 --apple-time 1.1.1.1
+        elif [[ "$(uname)" == "Linux" ]]; then
+            ping -c 1 1.1.1.1
+        fi
     fi
 fi
 # --- Network Check End ---
