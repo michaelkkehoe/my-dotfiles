@@ -33,6 +33,7 @@ run_brew() {
             'yt-dlp'
             'unzip'
             'lance0/tap/ttl'
+            'poetry'
         )
 
         for index in ${!desired_formulae[*]}

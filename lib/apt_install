@@ -11,3 +11,4 @@ apt install unzip -y
 apt install curl -y
 apt install sqlite -y
 curl -fsSL https://raw.githubusercontent.com/lance0/ttl/master/install.sh | sh
+curl -sSL https://install.python-poetry.org | python3 -
