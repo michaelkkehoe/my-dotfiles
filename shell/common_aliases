@@ -26,7 +26,8 @@ alias week='date +%V'
 # Stopwatch
 alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
 
-# Quickly serve the current directory as HTTP
+# Python
+alias pa="source $(poetry env info --path)/bin/activate"
 alias serve='python3 -m SimpleHTTPServer -p 8000'
 
 # PS
@@ -97,3 +98,4 @@ alias yt-dlp-audio='yt-dlp -x --audio-format mp3 --embed-thumbnail -o "%(title)s
 # History aliases
 alias h="history"
 alias history-stat="history . | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
+
